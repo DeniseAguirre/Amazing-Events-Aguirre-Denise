@@ -1,0 +1,281 @@
+:root {
+    font-size: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+main {
+    width: 100%;
+
+}
+
+/*HOME SECTION*/
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+.nav-events {
+    padding: 1rem!important;
+    background-color: whitesmoke;
+    width: 100%;
+}
+
+.nav-link {
+    text-decoration: none;
+}
+
+.nav-item {
+    background-color: #d90368;
+    margin: .5rem;
+}
+
+.carousel .carousel-item {
+    height: 60vh;
+  }
+
+
+.img-carousel {
+    object-fit: cover;
+    height: 60vh;
+
+}
+
+.category {
+    align-self: center;
+    
+}
+
+.search {
+    align-self: center;
+}
+
+.header-section {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding: 1rem;
+}
+
+.cards-section {
+    padding: 2rem;
+}
+
+.card-img-top {
+    height: 40%;
+    object-fit: cover;
+}
+
+.card {
+    width: auto;
+}
+
+
+.c-footer {
+    background-color: transparent!important;
+}
+
+footer {
+    height: auto;
+    margin-top: auto;
+}
+
+.footer-mockup1 {
+    background-color: #d90368;
+    padding: 2rem;
+    align-items: center;
+
+}
+
+.icon-link {
+    color: white;
+}
+
+
+.style-icon {
+    font-size: 1.5em;
+    background-color: black;
+    padding:0.625rem  0.75rem;
+    border-radius: 50%;
+}
+
+.cohort {
+    color: white;
+    font-weight: 800;
+    font-size: large;
+    margin: 0;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+}
+
+.form-style {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    padding: 2rem;
+}
+
+.submit {
+    width: 20%;
+    margin-top: 1rem;
+    align-self: flex-end;
+}
+
+.contact-input, .contact-textarea {
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.img-details {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.submit-main {
+    background-image: url("../images/pexels-riccardo-69903.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 70vh;
+}
+
+.section-submit {
+    display: flex;
+    justify-content: center;
+    min-height: 70vh;
+    align-items: center;
+}
+.submit-contact {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon-submit {
+    font-size: 3rem;
+    padding-bottom: 1rem;
+}
+
+.caption-stats {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table {
+    table-layout: fixed;
+    margin-bottom: 0!important;
+}
+
+.carousel-caption {
+    bottom: 5rem!important;
+}
+
+.title-caption {
+    text-shadow: 3px 3px 4px black;
+    font-size: 3rem;
+}
+
+.list-details {
+    padding-top: .5rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+
+@media (min-width: 375px) {
+    .table-stats {
+        padding: 1rem;
+    }
+}
+
+
+@media (max-width: 575.98px) {
+    .footer-mockup1 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .redes {
+        margin-bottom: 1rem;
+    }
+    .category {
+        display: flex;
+        flex-direction: column;
+    }
+    .search {
+        width: 100%!important;
+    }
+
+    .form-style {
+        width: 100%;
+    }
+
+    .submit {
+        align-self: center;
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+        background-color: #d90368;
+        color: white;
+    }
+
+    .category {
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+
+    .search {
+        width: 50%;
+    }
+
+    .burguer {
+        background-color: #d90368!important;
+        
+    }
+
+}
+
+@media (min-width: 992px){
+    .navbar-expand-lg .navbar-collapse {
+        justify-content: flex-end;
+    }
+    .nav-link {
+        background-color: #d90368;
+        margin: .5rem;
+        color: white!important;
+    }
+
+    .table-stats {
+        padding: 2rem;
+    }
+}
+
