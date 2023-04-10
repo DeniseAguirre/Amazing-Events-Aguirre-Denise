@@ -1,50 +1,109 @@
-// crear el contenedor 
-const contenedor = document.getElementById('cards-past');
-// obtener los datos en una variable
-const eventos = fechasPasadas(data.eventos);
-//invocar a la función
-imprimirArticle(eventos, contenedor);
+const container = document.getElementById('cards-past');
 
+const containerCheckbox = document.getElementById('category-js')
 
+const containerInput = document.getElementById('inlineCheckbox1')
 
-// crear el article
-function crearArticle(evento){
+const containerSearch = document.getElementById('search-js')
+
+const eventsData = pastEvents(data.eventos);
+
+const categoriesCheckbox = eventsData.map((event) => event.category);
+
+const setCategories = new Set(categoriesCheckbox);
+
+const arrayCategories = Array.from(setCategories);
+
+printCheckbox(arrayCategories, containerCheckbox)
+
+printCards(eventsData, container);
+
+//evenListeners
+containerCheckbox.addEventListener("change",() => {
+    const checkboxes = document.querySelectorAll('.form-check-input');
+    const inputSearch = document.getElementById('search-js');
+    const selectedCategories = Array.from(checkboxes)
+                                        .filter((checkbox) => checkbox.checked)
+                                        .map((checkbox) => checkbox.value);
+
+    const filteredEvents = crossFilter(eventsData, selectedCategories.length === 0 ? arrayCategories : selectedCategories, inputSearch.value)
+    printCards(filteredEvents, container);
+});
+
+containerSearch.addEventListener("input",() => {
+    const checkboxes = document.querySelectorAll('.form-check-input');
+    const inputSearch = document.getElementById('search-js');
+    const selectedCategories = Array.from(checkboxes)
+                                        .filter((checkbox) => checkbox.checked)
+                                        .map((checkbox) => checkbox.value);
+
+    const filteredEvents = crossFilter(eventsData, selectedCategories.length === 0 ? arrayCategories : selectedCategories, inputSearch.value)
+
+    printCards(filteredEvents, container);
+});
+
+//Funciones
+function cardTemplate(event){
     return ` <article class="card border-black col-11 col-md-4 col-xl-3">
-    <img class="card-img-top" src="${evento.image}" alt=""></img>
+    <img class="card-img-top" src="${event.image}" alt=""></img>
     <div class="card-body">
-        <span class="date">${evento.date}</span>
-        <h4 class="card-title">${evento.name}</h4>
-        <p class="card-text">${evento.description}</p>
+        <span class="date">${event.date}</span>
+        <h4 class="card-title">${event.name}</h4>
+        <p class="card-text">${event.description}</p>
     </div>
     <div class="card-footer c-footer d-flex justify-content-between align-items-center">
-        <span>Price: $${evento.price}</span>
-        <a href="./details.html" class="btn btn-dark">Details</a>
+        <span>Price: $${event.price}</span>
+        <a href="./details.html?id=${event.name}" class="btn btn-dark">Details</a>
     </div>
 </article>
 `
 }
 
-//filtra los articulos por fechas pasadas
-function fechasPasadas(listaEventos){
-    const fechaActual = data.fechaActual
-    let aux=[]
-    for (let evento of listaEventos) {
-        if(evento.date < fechaActual) {
-            aux.push(evento)
+function pastEvents(eventList){
+    const referenceDate = data.fechaActual
+    let arrayPastEvents =[]
+    for (let event of eventList) {
+        if(event.date < referenceDate) {
+            arrayPastEvents.push(event)
         }
     } 
-    return aux;
+    return arrayPastEvents;
 }
 
-// mandar los articulos filtrados al HTML
-function imprimirArticle (listaEventos, elementoHTML) {
-    // crear el template
+function printCards(eventList, place) {
     let template = ` `
-    // traer todos los eventos al template
-    for (let evento of listaEventos) {
-        template += crearArticle(evento)
+    for (let event of eventList) {
+        template += cardTemplate(event)
     }
-    // asignar el espacio donde va a estar el template
-    elementoHTML.innerHTML = template
-    
+    if (eventList.length === 0) {
+        template = `<h4>No se encontraron resultados</h4>`
+    }
+    place.innerHTML = template
+}
+
+function printCheckbox(categories, place){
+    let template = "";
+    for (let category of categories) {
+        template +=` <div class="form-check form-check-inline">
+    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${category}" onchange="">
+    <label class="form-check-label" for="inlineCheckbox1">${category}</label>
+  </div>
+`
+}
+place.innerHTML += template;
+}
+
+function filterCategories(events, categories){
+    const categoriesFound = events.filter((event) => categories.includes(event.category));
+    return categoriesFound;
+}
+
+function filterText(events, text){
+    return events.filter((event) => event.name.toLowerCase().includes(text.toLowerCase()))
+}
+
+function crossFilter(events, category, text){
+    const resultFilterCategories = filterCategories(events, category);
+    const resultFilterText = filterText(resultFilterCategories, text);
+    return resultFilterText;
 }

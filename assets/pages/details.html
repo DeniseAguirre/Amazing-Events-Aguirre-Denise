@@ -19,57 +19,40 @@
 </head>
 
 <body>
-    <div class="container-fluid contenedor-principal">
-        <main>
-            <header>
-                <!--nav-->
-                <nav class="navbar nav-events navbar-expand-lg bg-body-tertiary">
-                    <div class="container-fluid">
-                        <a class="navbar-brand justify-content-start" href="../../index.html">
-                            <img class="logo" src="../../assets/images/LogoAmazingEvents.png" alt="logo_Amazing_Events">
-                        </a>
-                        <button class="navbar-toggler burguer" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav">
-                                <a class="nav-link rounded" aria-current="page" href="../../index.html">Home</a>
-                                <a class="nav-link rounded" href="./upcoming-events.html">Upcoming Events</a>
-                                <a class="nav-link rounded" href="./past-events.html">Past Events</a>
-                                <a class="nav-link rounded" href="./contact.html">Contact</a>
-                                <a class="nav-link rounded" href="./stats.html">Stats</a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-            <div class="card m-5 card-details text-white bg-dark">
-                <div class="row g-0">
-                    <div class="col-md-6">
-                        <img src="../images/Concierto-de-musica1.jpg" class="rounded-start img-details"
-                            alt="Concierto-musical">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card-body m-3">
-                            <h5 class="card-title">Metallica in concert</h5>
-                            <p class="card-text">The only concert of the most emblematic band in the world</p>
-                            <ul class="list-details">
-                                <li>date: 2022-01-22</li>
-                                <li>category: Music Concert</li>
-                                <li>place: Room A</li>
-                                <li>capacity: 138000</li>
-                                <li>estimate:138000</li>
-                                <li>price: 150</li>
-                            </ul>
+    <div class="container-fluid flex-fill d-flex main-container">
+
+        <header>
+            <!--nav-->
+            <nav class="navbar nav-events navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand justify-content-start" href="../../index.html">
+                        <img class="logo" src="../../assets/images/LogoAmazingEvents.png" alt="logo_Amazing_Events">
+                    </a>
+                    <button class="navbar-toggler burguer" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-link rounded" aria-current="page" href="../../index.html">Home</a>
+                            <a class="nav-link rounded" href="./upcoming-events.html">Upcoming Events</a>
+                            <a class="nav-link rounded" href="./past-events.html">Past Events</a>
+                            <a class="nav-link rounded" href="./contact.html">Contact</a>
+                            <a class="nav-link rounded" href="./stats.html">Stats</a>
                         </div>
                     </div>
                 </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="card m-5 card-details text-white bg-dark" id="detail-event">
+
             </div>
         </main>
 
-        <footer>
+        <footer class="footer mt-auto">
             <div class="footer-mockup1 d-flex justify-content-between">
                 <div class="redes">
                     <a class="icon-link" href="https://www.instagram.com/" target="_blank"><i
@@ -82,10 +65,15 @@
                 <p class="cohort">Cohort FS046</p>
             </div>
         </footer>
+
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
+    <script src="../javascript/datajs.js"></script>
+    <script src="../javascript/details.js"></script>
+
 </body>
 
 </html>
