@@ -16,12 +16,6 @@ body {
     flex-direction: column;
 }
 
-.btn-dark:hover {
-    background-color: #d90368!important;
-    border-color: #d90368!important;
-}
-
-
 .main-container {
     padding: 0 !important;
     flex-direction: column;
@@ -279,14 +273,11 @@ th {
     padding-left: 0;
 }
 
-
-
 @media (min-width: 375px) {
     .table-stats {
         padding: 1rem;
     }
 }
-
 
 @media (max-width: 575.98px) {
     .footer-mockup1 {
@@ -323,7 +314,6 @@ th {
         border-radius: 0.25rem 0 0 0.25rem!important;
     }
 }
-
 
 @media (max-width: 767.98px) {
     .header-section {
@@ -368,4 +358,13 @@ th {
     .table-stats {
         padding: 2rem;
     }
+}
+
+.btn-details {
+    cursor: pointer!important;
+}
+
+.btn-dark:hover {
+    background-color: #d90368!important;
+    border-color: #d90368!important;
 }

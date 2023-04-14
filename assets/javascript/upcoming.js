@@ -1,22 +1,32 @@
+import {printCards, printCheckbox, crossFilter } from "../javascript/module/funciones.js";
+
 const container = document.getElementById("cards-upcoming");
-
 const containerCheckbox = document.getElementById("category-js");
-
-const containerInput = document.getElementById("inlineCheckbox1");
-
 const containerSearch = document.getElementById("search-js");
 
-const eventsData = upcomingEvents(data.eventos);
+let eventsData, referenceDate, eventsUpcoming, arrayCategories;
 
-const categoriesCheckbox = eventsData.map((event) => event.category);
+//petición
+const url = "https://mindhub-xj03.onrender.com/api/amazing"
+fetch(url) 
+    .then(response => response.json())
+    .then (datos => {
 
-const setCategories = new Set(categoriesCheckbox);
+            referenceDate = datos.currentDate
+     
+            eventsData = datos.events
 
-const arrayCategories = Array.from(setCategories);
+            eventsUpcoming = eventsData.filter(events => events.date >= referenceDate);
 
-printCheckbox(arrayCategories, containerCheckbox);
+            arrayCategories = [ ... new Set(eventsData.map(event => event.category))]
 
-printCards(eventsData, container);
+            printCheckbox(arrayCategories, containerCheckbox)
+
+            printCards(eventsUpcoming, container, "./details.html");
+
+    })
+    .catch(err => console.log("Error :", err))
+
 
 //evenListeners
 containerCheckbox.addEventListener("change", () => {
@@ -46,71 +56,3 @@ containerSearch.addEventListener("input", () => {
 
     printCards(filteredEvents, container);
 });
-
-//Funciones
-function cardTemplate(event) {
-    return ` <article class="card border-black col-11 col-md-4 col-xl-3">
-    <img class="card-img-top" src="${event.image}" alt=""></img>
-    <div class="card-body">
-        <span class="date">${event.date}</span>
-        <h4 class="card-title">${event.name}</h4>
-        <p class="card-text">${event.description}</p>
-    </div>
-    <div class="card-footer c-footer d-flex justify-content-between align-items-center">
-        <span>Price: $${event.price}</span>
-        <a href="./details.html?id=${event.name}" class="btn btn-dark">Details</a>
-    </div>
-</article>
-`;
-}
-
-function upcomingEvents(eventList) {
-    const referenceDate = data.fechaActual;
-    let arrayUpcomingEvents = [];
-    for (let event of eventList) {
-    if (event.date >= referenceDate) {
-        arrayUpcomingEvents.push(event);
-        }
-    }
-    return arrayUpcomingEvents;
-}
-
-function printCards(eventList, place) {
-    let template = ` `;
-    for (let event of eventList) {
-    template += cardTemplate(event);
-    }
-    if (eventList.length === 0) {
-    template = `<h4>No se encontraron resultados</h4>`;
-    }
-    place.innerHTML = template;
-}
-
-function printCheckbox(categories, place) {
-    let template = "";
-    for (let category of categories) {
-    template += ` <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${category}" onchange="">
-    <label class="form-check-label" for="inlineCheckbox1">${category}</label>
-    </div>
-`;
-    }
-    place.innerHTML += template;
-}
-
-function filterCategories(events, categories) {
-    const categoriesFound = events.filter((event) => categories.includes(event.category));
-    return categoriesFound;
-}
-
-function filterText(events, text) {
-    return events.filter((event) =>
-    event.name.toLowerCase().includes(text.toLowerCase())
-    );
-}
-
-function crossFilter(events, category, text) {
-    const resultFilterCategories = filterCategories(events, category);
-    const resultFilterText = filterText(resultFilterCategories, text);
-    return resultFilterText;
-}
