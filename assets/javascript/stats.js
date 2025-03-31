@@ -1,104 +1,81 @@
-import { printTableStatistics, printTableByCategory } from "../javascript/module/funciones.js";
+import { datos } from "../data/data.js";
+import {
+  printTableStatistics,
+  printTableByCategory,
+} from "../javascript/module/funciones.js";
 
-const containerTableEvents = document.getElementById('events-statistics');
-const containerTableUpcoming = document.getElementById('statistics-upcoming');
-const containerTablePast = document.getElementById('statistics-past');
+const containerTableEvents = document.getElementById("events-statistics");
+const containerTableUpcoming = document.getElementById("statistics-upcoming");
+const containerTablePast = document.getElementById("statistics-past");
 
-let referenceDate, eventsData, eventsUpcoming, eventsPast;
+let referenceDate = datos.currentDate;
+let eventsData = datos.events;
 
-//petición
-const url = "https://mindhub-xj03.onrender.com/api/amazing"
-fetch(url) 
-    .then(response => response.json())
-    .then (datos => {
+let eventsUpcoming = eventsData.filter((event) => event.date >= referenceDate);
+let eventsPast = eventsData.filter((event) => event.date < referenceDate);
 
-            referenceDate = datos.currentDate
+// 🏆 Highest Attendance
+let eventMax = eventsPast.reduce((prev, curr) =>
+  prev.assistance / prev.capacity > curr.assistance / curr.capacity
+    ? prev
+    : curr
+);
+let highestAttendance = (eventMax.assistance / eventMax.capacity) * 100;
 
-            eventsData = datos.events
+// 🛑 Lowest Attendance
+let eventMin = eventsPast.reduce((prev, curr) =>
+  prev.assistance / prev.capacity < curr.assistance / curr.capacity
+    ? prev
+    : curr
+);
+let lowestAttendance = (eventMin.assistance / eventMin.capacity) * 100;
 
-            eventsUpcoming = eventsData.filter(events => events.date >= referenceDate);
+// 🎟️ Larger Capacity
+let eventLargerCapacity = eventsData.reduce((prev, curr) =>
+  prev.capacity > curr.capacity ? prev : curr
+);
 
-            eventsPast = eventsData.filter(events => events.date < referenceDate);
+printTableStatistics(
+  eventMax,
+  highestAttendance,
+  eventMin,
+  lowestAttendance,
+  eventLargerCapacity,
+  containerTableEvents
+);
 
-            //TABLE 1
-            // Highest Attendance 
+// 📅 Upcoming Events by Category
+let UpcomingCategories = eventsUpcoming.reduce((acc, curr) => {
+  if (!acc[curr.category]) {
+    acc[curr.category] = {
+      category: curr.category,
+      events: 0,
+      attendance: 0,
+      revenue: 0,
+    };
+  }
+  acc[curr.category].events += 1;
+  acc[curr.category].attendance += (curr.estimate * 100) / curr.capacity;
+  acc[curr.category].revenue += curr.price * curr.estimate;
+  return acc;
+}, {});
 
-            let eventMax = eventsPast.reduce((previousEvent, currentEvent) => (previousEvent.assistance / previousEvent.capacity) > (currentEvent.assistance / currentEvent.capacity) ? previousEvent : currentEvent);
+printTableByCategory(Object.values(UpcomingCategories), containerTableUpcoming);
 
-            let highestAttendance = (eventMax.assistance / eventMax.capacity) * 100;
+// ⏳ Past Events by Category
+let PastCategories = eventsPast.reduce((acc, curr) => {
+  if (!acc[curr.category]) {
+    acc[curr.category] = {
+      category: curr.category,
+      events: 0,
+      attendance: 0,
+      revenue: 0,
+    };
+  }
+  acc[curr.category].events += 1;
+  acc[curr.category].attendance += (curr.assistance * 100) / curr.capacity;
+  acc[curr.category].revenue += curr.price * curr.assistance;
+  return acc;
+}, {});
 
-            //Lowest Attendance
-
-            let eventMin = eventsPast.reduce((previousEvent, currentEvent) => (previousEvent.assistance / previousEvent.capacity) < (currentEvent.assistance / currentEvent.capacity) ? previousEvent : currentEvent);
-            console.log(eventMin)
-
-            let lowestAttendance = (eventMin.assistance / eventMin.capacity) * 100;
-            console.log(lowestAttendance)
-
-            //Larger Capacity 
-
-            let eventLargerCapacity = eventsData.reduce((previousEvent, currentEvent) =>  previousEvent.capacity > currentEvent.capacity ? previousEvent : currentEvent);
-            
-            let firstLargerCapacity = eventsData.find(objeto => objeto.capacity == eventLargerCapacity.capacity);
-            console.log(firstLargerCapacity)
-
-            printTableStatistics(eventMax, highestAttendance, eventMin,  lowestAttendance, firstLargerCapacity, containerTableEvents)
-
-            //TABLE 2
-            //Upcoming events statistics by category
-
-            let UpcomingCategories = eventsUpcoming.reduce((acc, curr) => {
-            
-                if (curr.category in acc) {
-                    acc[curr.category].category = curr.category
-                    acc[curr.category].events += 1,
-                    acc[curr.category].attendance += (curr.estimate * 100 / curr.capacity)
-                    acc[curr.category].revenue += curr.price * curr.estimate
-                    
-
-                } else {
-                    acc[curr.category] = {
-                    category: curr.category,
-                    events: 1,
-                    attendance: (curr.estimate * 100 / curr.capacity),
-                    revenue: curr.price * curr.estimate,
-                };
-            }
-            
-            return acc;
-            }, {});
-
-            printTableByCategory(Object.values(UpcomingCategories), containerTableUpcoming)
-
-            //TABLE 3
-            //Past events statistics by category
-
-            let PastCategories = eventsPast.reduce((acc, curr) => {
-            
-                if (curr.category in acc) {
-                    acc[curr.category].category = curr.category
-                    acc[curr.category].events += 1,
-                    acc[curr.category].attendance += (curr.assistance
-                        * 100 / curr.capacity)
-                    acc[curr.category].revenue += curr.price * curr.assistance
-
-                } else {
-                    acc[curr.category] = {
-                    category: curr.category,
-                    events: 1,
-                    attendance: (curr.assistance
-                        * 100 / curr.capacity),
-                    revenue: curr.price * curr.assistance
-                    ,
-                };
-            }            
-            return acc;
-            }, {});
-        
-            printTableByCategory(Object.values(PastCategories), containerTablePast)
-
-    })
-    .catch(err => console.log("Error :", err))
-
-
-
+printTableByCategory(Object.values(PastCategories), containerTablePast);

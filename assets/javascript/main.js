@@ -1,55 +1,35 @@
-import { printCards, printCheckbox, crossFilter } from "../javascript/module/funciones.js";
+import {
+  printCards,
+  printCheckbox,
+  crossFilter,
+} from "../javascript/module/funciones.js";
+import { datos } from "../data/data.js";
 
 const container = document.getElementById("cards-home");
 const containerCheckbox = document.getElementById("category-js");
 const containerSearch = document.getElementById("search-js");
 
-let eventsData, arrayCategories;
+let eventsData = datos.events;
+let arrayCategories = [...new Set(eventsData.map((event) => event.category))]; // Extraemos las categorías únicas
 
-//petición
-const url = "https://mindhub-xj03.onrender.com/api/amazing"
-fetch(url) 
-    .then(response => response.json())
-    .then (datos => {
-            
-            eventsData = datos.events
+printCheckbox(arrayCategories, containerCheckbox);
+printCards(eventsData, container, "../assets/pages/details.html");
 
-            arrayCategories = [ ... new Set(eventsData.map(event => event.category))]
+containerCheckbox.addEventListener("change", filterEvents);
+containerSearch.addEventListener("input", filterEvents);
 
-            printCheckbox(arrayCategories, containerCheckbox);
+function filterEvents() {
+  const checkboxes = document.querySelectorAll(".form-check-input");
+  const inputSearch = document.getElementById("search-js");
+  const selectedCategories = Array.from(checkboxes)
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
 
-            printCards(eventsData, container, "../assets/pages/details.html");
-            
-    })
-    .catch(err => console.log("Error :", err))
-
-
-//evenListeners
-containerCheckbox.addEventListener("change", () => {
-    const checkboxes = document.querySelectorAll(".form-check-input");
-    const inputSearch = document.getElementById("search-js");
-    const selectedCategories = Array.from(checkboxes)
-                                    .filter((checkbox) => checkbox.checked)
-                                    .map((checkbox) => checkbox.value);
-
-    const filteredEvents = crossFilter(eventsData,
+  const filteredEvents = crossFilter(
+    eventsData,
     selectedCategories.length === 0 ? arrayCategories : selectedCategories,
     inputSearch.value
-    );
-    printCards(filteredEvents, container);
-});
+  );
 
-containerSearch.addEventListener("input", () => {
-    const checkboxes = document.querySelectorAll(".form-check-input");
-    const inputSearch = document.getElementById("search-js");
-    const selectedCategories = Array.from(checkboxes)
-                                    .filter((checkbox) => checkbox.checked)
-                                    .map((checkbox) => checkbox.value);
-
-    const filteredEvents = crossFilter(eventsData,
-    selectedCategories.length === 0 ? arrayCategories : selectedCategories,
-    inputSearch.value
-    );
-
-    printCards(filteredEvents, container);
-});
+  printCards(filteredEvents, container);
+}

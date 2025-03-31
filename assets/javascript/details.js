@@ -1,28 +1,16 @@
+import { datos } from "../data/data.js";
 import { paintDetailEvent } from "../javascript/module/funciones.js";
 
-const container = document.getElementById('detail-event')
+const container = document.getElementById("detail-event");
 
-let eventsData, urlParams, params, id, eventFound;
+const urlParams = new URLSearchParams(location.search);
+const id = urlParams.get("id");
 
-//petición
-const url = "https://mindhub-xj03.onrender.com/api/amazing"
-fetch(url) 
-    .then(response => response.json())
-    .then (datos => {
-        
-            eventsData = datos.events
+const eventFound = datos.events.find((event) => event.id == id);
 
-            urlParams = location.search;
-
-            // extraemos el valor del url paraments con el metodo get de urlsearchparaments lo que hace es devolver el valor del parametro con la clave especificada
-            params = new URLSearchParams(urlParams)
-            
-            id = params.get('id');
-            
-            eventFound = eventsData.find((event) => event._id == id)
-
-            paintDetailEvent(eventFound, container);
-            
-    })
-    .catch(err => console.log("Error :", err))
-
+if (!eventFound) {
+  console.error("Evento no encontrado");
+  container.innerHTML = "<p>Evento no encontrado</p>";
+} else {
+  paintDetailEvent(eventFound, container);
+}
